@@ -13,6 +13,7 @@
   ],
   "author": "Taimos GmbH",
   "license": "Apache-2.0",
+  "repository": "taimos/alexa-vui-generator",
   "dependencies": {
     "yamljs": "^0.3.0"
   },
