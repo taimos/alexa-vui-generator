@@ -1,0 +1,22 @@
+{
+  "name": "alexa-vui-generator",
+  "version": "0.1.0",
+  "description": "Generates JSON files describing the intents and types of an Alexa Skill",
+  "main": "index.js",
+  "scripts": {
+    "test": "node_modules/.bin/eslint ."
+  },
+  "keywords": [
+    "alexa",
+    "skill",
+    "vui"
+  ],
+  "author": "Taimos GmbH",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.0.0"
+  }
+}
