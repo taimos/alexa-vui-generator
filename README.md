@@ -1,5 +1,8 @@
 # Generator for Alexa Voice Interface definitions
 
+[![npm version](https://badge.fury.io/js/alexa-vui-generator.svg)](https://badge.fury.io/js/alexa-vui-generator)
+
+
 ## Installation
 
 `npm install alexa-vui-generator`
