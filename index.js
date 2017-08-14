@@ -40,6 +40,15 @@ exports.readIntentsFromYAML = intentLib.readIntentsFromYAML;
 exports.createNewSlotType = typeLib.createNewSlotType;
 
 /**
+ * Add the given value to the type
+ * @param type - the slot type to add the value to
+ * @param id - the id of the entity
+ * @param value - the value of the entity
+ * @param synonyms - the synonyms to use for the entity
+ */
+exports.addValueToType = typeLib.addValueToType;
+
+/**
  * Reads the types.yaml file and returns a promise that resolves to the list of types
  * @return {Promise.<Array>} the type list
  */
