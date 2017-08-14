@@ -30,6 +30,12 @@ exports.addSlotToIntent = intentLib.addSlotToIntent;
  */
 exports.readIntentsFromYAML = intentLib.readIntentsFromYAML;
 
+/**
+ * Creates a list of intents your skill should provide when using the AudioPlayer feature
+ * @return {Promise.<Array>} the intent list
+ */
+exports.createAudioPlayerIntents = intentLib.createAudioPlayerIntents;
+
 // Slot Types
 /**
  * Create a new slot type and add it to the list
