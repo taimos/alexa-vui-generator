@@ -104,10 +104,10 @@ exports.createVoiceInterface = (intentCreator, typeCreator, fileName) => {
   };
   
   let generationPromise = Promise.all([
-    intentCreator().then(intents => {
+    createPromise(intentCreator).then(intents => {
       vui.intents = intents;
     }),
-    typeCreator().then(types => {
+    createPromise(typeCreator).then(types => {
       vui.types = types;
     })
   ]).then(() => {
@@ -121,5 +121,24 @@ exports.createVoiceInterface = (intentCreator, typeCreator, fileName) => {
     });
   }
   return generationPromise;
+};
+
+const createPromise = arg => {
+  'use strict';
+  let promise = undefined;
+  if (arg instanceof Function) {
+    let invoked = arg();
+    if (invoked.then && invoked.then instanceof Function) {
+      promise = invoked;
+    } else {
+      promise = Promise.resolve(invoked);
+    }
+  } else if (Array.isArray(arg)) {
+    let promiseArray = arg.map(createPromise);
+    promise = Promise.all(promiseArray).then(results => [].concat.apply([], results));
+  } else {
+    promise = Promise.resolve(arg);
+  }
+  return promise;
 };
 
