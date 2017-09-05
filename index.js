@@ -63,70 +63,96 @@ exports.readTypesFromYAML = typeLib.readTypesFromYAML;
 // VUI generation
 /**
  * Create the voice interface
- * @param intentCreator - the function creating the intents
- * @param typeCreator - the function creating the slot types
- * @param fileName - (optional) the target file name
+ * @param options - the generation options
+ * @param locale - the model locale
  * @return {Promise.<VoiceInterface>}
  */
-exports.createVoiceInterface = (intentCreator, typeCreator, fileName) => {
+exports.createLanguageModel = (options, locale) => {
   'use strict';
+  let intentCreators = options.intentCreators || [];
+  let typeCreators = options.typeCreators || [];
   
-  //Base content with dummy intent to activate dialog model
-  let vui = {
-    prompts: [
-      {
-        id: 'Elicit.Intent-DialogActivationDummyIntent.IntentSlot-dummy',
-        promptVersion: '1.0',
-        definitionVersion: '1.0',
-        variations: [
-          {
-            type: 'PlainText',
-            value: 'Dummy question'
-          }
-        ]
-      }
-    ],
-    dialog: {
-      version: '1.0',
-      intents: [
-        {
-          name: 'DialogActivationDummyIntent',
-          confirmationRequired: false,
-          prompts: {},
-          slots: [
-            {
-              name: 'dummy',
-              type: 'AMAZON.NUMBER',
-              elicitationRequired: true,
-              confirmationRequired: false,
-              prompts: {
-                elicit: 'Elicit.Intent-DialogActivationDummyIntent.IntentSlot-dummy'
-              }
-            }
-          ]
-        }
-      ]
-    }
-  };
+  let modelFileName = `./models/${locale}.json`;
+  let vui;
+  if (fs.existsSync(modelFileName)) {
+    vui = JSON.parse(fs.readFileSync(modelFileName));
+  } else {
+    vui = {};
+  }
+  
+  if (!vui.interactionModel) {
+    vui.interactionModel = {};
+  }
+  if (!vui.interactionModel.languageModel) {
+    vui.interactionModel.languageModel = {
+      invocationName: options.invocation || ''
+    };
+  } else if (options.invocation) {
+    vui.interactionModel.languageModel.invocationName = options.invocation;
+  }
+  addDummyDialog(vui);
   
   let generationPromise = Promise.all([
-    createPromise(intentCreator).then(intents => {
-      vui.intents = intents;
+    createPromise(intentCreators).then(intents => {
+      vui.interactionModel.languageModel.intents = intents;
     }),
-    createPromise(typeCreator).then(types => {
-      vui.types = types;
+    createPromise(typeCreators).then(types => {
+      vui.interactionModel.languageModel.types = types;
     })
   ]).then(() => {
     return Promise.resolve(vui);
   });
   
-  if (fileName) {
-    return generationPromise.then(vui => {
-      fs.writeFileSync(fileName, JSON.stringify(vui, null, 2));
-      return vui;
-    });
+  if (options.postProcessor) {
+    generationPromise = generationPromise.then(options.postProcessor);
   }
-  return generationPromise;
+  
+  return generationPromise.then(vui => {
+    fs.writeFileSync(modelFileName, JSON.stringify(vui, null, 2));
+    return vui;
+  });
+};
+
+const addDummyDialog = vui => {
+  'use strict';
+  
+  let interactionModel = vui.interactionModel;
+  if (!interactionModel.prompts) {
+    interactionModel.prompts = [];
+  }
+  if (interactionModel.prompts.length !== 0) {
+    return;
+  }
+  if (!interactionModel.dialog) {
+    interactionModel.dialog = {};
+  }
+  if (!interactionModel.dialog.intents) {
+    interactionModel.dialog.intents = [];
+  }
+  interactionModel.dialog.intents.push({
+    name: 'DialogActivationDummyIntent',
+    confirmationRequired: false,
+    slots: [
+      {
+        name: 'dummy',
+        type: 'AMAZON.NUMBER',
+        elicitationRequired: true,
+        confirmationRequired: false,
+        prompts: {
+          elicitation: 'Elicit.Intent-DialogActivationDummyIntent.IntentSlot-dummy'
+        }
+      }
+    ]
+  });
+  interactionModel.prompts.push({
+    id: 'Elicit.Intent-DialogActivationDummyIntent.IntentSlot-dummy',
+    variations: [
+      {
+        type: 'PlainText',
+        value: 'Dummy question'
+      }
+    ]
+  });
 };
 
 const createPromise = arg => {

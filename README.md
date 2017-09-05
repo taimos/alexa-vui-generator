@@ -12,18 +12,21 @@
 ```
 const generator = require('alexa-vui-generator');
 
-generator.createVoiceInterface(intentGeneration, typeGeneration, 'alexa.json');
+generator.createLanguageModel(options, locale);
 ```
 
-`intentGeneration` is a function that returns a Promise resolving to a list of intents as expected by the Alexa Skill Builder
+`options` is an object which configures the generation of the language model
 
-`typeGeneration` is a function that returns a Promise resolving to a list of types as expected by the Alexa Skill Builder
+* `intentCreators` is a function or an array of functions that return a Promise resolving to a list of intents as expected by the Alexa Skill Builder
+* `typeCreators` is a function or an array of functions that return a Promise resolving to a list of types as expected by the Alexa Skill Builder
+* `invocation` is a string that denotes the invocation name of the skill
+* `postProcessor` is an optional function with one argument to post process the generated VUI 
 
-`alexa.json` is the file name the created definition is written to
+`locale` is the locale that is generated and denotes the file name. (models/{locale}.json)
 
 ### Using intents.yaml
 
-You can use the provided function `generator.readIntentsFromYAML` as `intentGeneration` that reads the intents from a file called `intents.yaml` and adds the Amazon default intents.
+You can use the provided function `generator.readIntentsFromYAML` as a function in `intentCreators` that reads the intents from a file called `intents.yaml` and adds the Amazon default intents.
 
 Furthermore it expands the provided texts to allow variations in the language. See example for usage.
 
@@ -61,7 +64,7 @@ This resolves to the following intent definition:
 
 ### Using types.yaml
 
-You can use the provided function `generator.readTypesFromYAML` as `typeGeneration` that reads the slot types from a file called `types.yaml`.
+You can use the provided function `generator.readTypesFromYAML` as a function in `typeCreators` that reads the slot types from a file called `types.yaml`.
 
 `types.yaml`
 ```yaml
@@ -90,3 +93,7 @@ This resolves to the following intent definition:
   ]
 }
 ```
+
+### Other generator functions used as `intentCreators`
+
+`createAudioPlayerIntents` - Creates the intents needed when using the AudioPlayer functionality.

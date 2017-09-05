@@ -1,7 +1,7 @@
 {
   "name": "alexa-vui-generator",
-  "version": "0.2.0",
-  "description": "Generates JSON files describing the intents and types of an Alexa Skill",
+  "version": "1.0.0",
+  "description": "Generates the language model file describing the intents and types of an Alexa Skill",
   "main": "index.js",
   "scripts": {
     "test": "node_modules/.bin/eslint ."
