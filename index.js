@@ -26,6 +26,7 @@ exports.addSlotToIntent = intentLib.addSlotToIntent;
 
 /**
  * Reads the intents.yaml file and returns a promise that resolves to the list of intents
+ * @param locale - the locale of the language model
  * @return {Promise.<Array>} the intent list
  */
 exports.readIntentsFromYAML = intentLib.readIntentsFromYAML;
@@ -56,6 +57,7 @@ exports.addValueToType = typeLib.addValueToType;
 
 /**
  * Reads the types.yaml file and returns a promise that resolves to the list of types
+ * @param locale - the locale of the language model
  * @return {Promise.<Array>} the type list
  */
 exports.readTypesFromYAML = typeLib.readTypesFromYAML;
@@ -93,10 +95,10 @@ exports.createLanguageModel = (options, locale) => {
   addDummyDialog(vui);
   
   let generationPromise = Promise.all([
-    createPromise(intentCreators).then(intents => {
+    createPromise(intentCreators, locale).then(intents => {
       vui.interactionModel.languageModel.intents = intents;
     }),
-    createPromise(typeCreators).then(types => {
+    createPromise(typeCreators, locale).then(types => {
       vui.interactionModel.languageModel.types = types;
     })
   ]).then(() => {
@@ -155,18 +157,18 @@ const addDummyDialog = vui => {
   });
 };
 
-const createPromise = arg => {
+const createPromise = (arg, locale) => {
   'use strict';
   let promise = undefined;
   if (arg instanceof Function) {
-    let invoked = arg();
+    let invoked = arg(locale);
     if (invoked.then && invoked.then instanceof Function) {
       promise = invoked;
     } else {
       promise = Promise.resolve(invoked);
     }
   } else if (Array.isArray(arg)) {
-    let promiseArray = arg.map(createPromise);
+    let promiseArray = arg.map(fn => createPromise(fn, locale));
     promise = Promise.all(promiseArray).then(results => [].concat.apply([], results));
   } else {
     promise = Promise.resolve(arg);

@@ -17,12 +17,12 @@ generator.createLanguageModel(options, locale);
 
 `options` is an object which configures the generation of the language model
 
-* `intentCreators` is a function or an array of functions that return a Promise resolving to a list of intents as expected by the Alexa Skill Builder
-* `typeCreators` is a function or an array of functions that return a Promise resolving to a list of types as expected by the Alexa Skill Builder
+* `intentCreators` is a function or an array of functions that return a Promise resolving to a list of intents as expected by the Alexa Skill Builder.
+* `typeCreators` is a function or an array of functions that return a Promise resolving to a list of types as expected by the Alexa Skill Builder.
 * `invocation` is a string that denotes the invocation name of the skill
 * `postProcessor` is an optional function with one argument to post process the generated VUI 
 
-`locale` is the locale that is generated and denotes the file name. (models/{locale}.json)
+`locale` is the locale that is generated and denotes the file name. (models/{locale}.json). It is forwarded to the generator functions as the first argument.
 
 ### Using intents.yaml
 
@@ -62,6 +62,21 @@ This resolves to the following intent definition:
 }
 ```
 
+To support different locales you can provide an object as texts with the locales as keys instead of a string array.
+
+`intents.yaml`
+```yaml
+MySuperIntent:
+  texts:
+    'en-US':
+      - (Play|Start|Open) the {channel} (channel|)
+    'de-DE':
+      - (Spiele|Starte|Öffne) den {channel} (channel|Kanal|)
+  slots:
+    channel: ChannelName
+```
+
+
 ### Using types.yaml
 
 You can use the provided function `generator.readTypesFromYAML` as a function in `typeCreators` that reads the slot types from a file called `types.yaml`.
@@ -92,6 +107,20 @@ This resolves to the following intent definition:
     }
   ]
 }
+```
+
+To support different locales you can provide an object as values with the locales as keys instead of a string array.
+
+`types.yaml`
+```yaml
+ChannelName:
+  rock:
+    'en-US':
+      - rock
+      - rock music
+    'de-DE':
+      - rock
+      - rock musik
 ```
 
 ### Other generator functions used as `intentCreators`
