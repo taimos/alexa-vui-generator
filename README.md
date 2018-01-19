@@ -21,6 +21,7 @@ generator.createLanguageModel(options, locale);
 * `typeCreators` is a function or an array of functions that return a Promise resolving to a list of types as expected by the Alexa Skill Builder.
 * `invocation` is a string that denotes the invocation name of the skill
 * `postProcessor` is an optional function with one argument to post process the generated VUI 
+* `pretty` defines if the output should be pretty printed. By default it is minified.
 
 `locale` is the locale that is generated and denotes the file name. (models/{locale}.json). It is forwarded to the generator functions as the first argument.
 

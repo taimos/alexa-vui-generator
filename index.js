@@ -110,7 +110,11 @@ exports.createLanguageModel = (options, locale) => {
   }
   
   return generationPromise.then(vui => {
-    fs.writeFileSync(modelFileName, JSON.stringify(vui, null, 2));
+    if (options.pretty) {
+      fs.writeFileSync(modelFileName, JSON.stringify(vui, null, 2));
+    } else {
+      fs.writeFileSync(modelFileName, JSON.stringify(vui));
+    }
     return vui;
   });
 };
