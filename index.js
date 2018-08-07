@@ -37,6 +37,12 @@ exports.readIntentsFromYAML = intentLib.readIntentsFromYAML;
  */
 exports.createAudioPlayerIntents = intentLib.createAudioPlayerIntents;
 
+/**
+ * Creates a list of intents your skill should provide when using the Display feature
+ * @return {Promise.<Array>} the intent list
+ */
+exports.createDisplayIntents = intentLib.createDisplayIntents;
+
 // Slot Types
 /**
  * Create a new slot type and add it to the list

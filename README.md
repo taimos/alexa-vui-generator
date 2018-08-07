@@ -127,3 +127,4 @@ ChannelName:
 ### Other generator functions used as `intentCreators`
 
 `createAudioPlayerIntents` - Creates the intents needed when using the AudioPlayer functionality.
+`createDisplayIntents` - Creates the intents needed when using the Display functionality.
