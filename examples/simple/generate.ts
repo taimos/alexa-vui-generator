@@ -5,8 +5,7 @@
 import {createLanguageModel, readIntentsFromYAML, readTypesFromYAML} from '../../lib';
 
 createLanguageModel({
-    intentCreators: readIntentsFromYAML,
-    typeCreators: [readTypesFromYAML],
     invocation: 'p. s. e.',
+    processors: [readIntentsFromYAML, readTypesFromYAML],
     pretty: true,
 }, 'de-DE');

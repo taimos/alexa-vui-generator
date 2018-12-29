@@ -1,145 +1,95 @@
 import {load} from 'yamljs';
+import {IntentConfig, IntentFile, LocalizedTexts} from './filetypes';
 import {expandStrings} from './utils';
+import {VoiceInterface} from './voicemodel';
 
-export interface SlotDefinition {
-    name : string;
-    type : string;
-    samples : string[];
-}
-
-export interface IntentDefinition {
-    name : string;
-    samples : string[];
-    slots? : SlotDefinition[];
-}
-
-/**
- * Create a new intent and add it to the list
- * @param intentList - the list to add the created intent to
- * @param intentName - the name of the new intent
- * @return {{name: *, samples: Array}} intent object
- */
-export const createNewIntent = (intentList : IntentDefinition[], intentName : string) : IntentDefinition => {
-    'use strict';
-    const newIntent : IntentDefinition = {
-        name: intentName,
-        samples: [],
-    };
-    intentList.push(newIntent);
-    return newIntent;
-};
-
-/**
- * Add a new slot to the given intent
- * @param intent - the intent to add the slot to
- * @param name - the slot name
- * @param type - the slot type
- * @return {{name: *, type: *, samples: Array}} the created slot
- */
-export const addSlotToIntent = (intent : IntentDefinition, name : string, type : string) : SlotDefinition => {
-    'use strict';
-    if (!intent.slots) {
-        intent.slots = [];
+const expandTexts = (texts : string[] | LocalizedTexts, locale : string) => {
+    let res;
+    if (Array.isArray(texts)) {
+        res = texts;
+    } else if (texts[locale]) {
+        res = texts[locale];
+    } else {
+        res = [];
     }
-    const newSlot : SlotDefinition = {name, type, samples: []};
-    intent.slots.push(newSlot);
-    return newSlot;
+    return expandStrings(res);
 };
 
 /**
- * Reads the intents.yaml file and returns a promise that resolves to the list of intents
- * @param locale - the locale of the language model
- * @return {Promise.<Array>} the intent list
+ * Reads the intents.yaml file and modifies the given VUI
  */
-export const readIntentsFromYAML = (locale) : Promise<IntentDefinition[]> => {
-    'use strict';
-
-    const intentList = [];
-
-    // Add basic intents
-    createNewIntent(intentList, 'AMAZON.CancelIntent');
-    createNewIntent(intentList, 'AMAZON.HelpIntent');
-    createNewIntent(intentList, 'AMAZON.StopIntent');
-
-    const dialogActivation = createNewIntent(intentList, 'DialogActivationDummyIntent');
-    addSlotToIntent(dialogActivation, 'dummy', 'AMAZON.NUMBER');
+export const readIntentsFromYAML = (vui : VoiceInterface, locale : string) : Promise<VoiceInterface> => {
+    vui.getOrCreateIntent('AMAZON.CancelIntent');
+    vui.getOrCreateIntent('AMAZON.HelpIntent');
+    vui.getOrCreateIntent('AMAZON.StopIntent');
 
     // Intent expansion
-    const intentConfig = load('intents.yaml');
-    for (const key in intentConfig) {
-        if (intentConfig.hasOwnProperty(key)) {
-            const intent = createNewIntent(intentList, key);
-            const config = intentConfig[key];
+    const intentConfig : IntentFile = load('intents.yaml');
+    for (const intentName in intentConfig) {
+        if (intentConfig.hasOwnProperty(intentName)) {
+            const intent = vui.getOrCreateIntent(intentName);
+            const config : IntentConfig = intentConfig[intentName];
 
             if (config) {
                 // Generate Samples
                 if (config.texts) {
-                    let texts;
-                    if (Array.isArray(config.texts)) {
-                        texts = config.texts;
-                    } else if (config.texts[locale]) {
-                        texts = config.texts[locale];
-                    } else {
-                        texts = [];
-                    }
-                    expandStrings(texts).forEach((e) => intent.samples.push(e));
+                    expandTexts(config.texts, locale).forEach((e) => intent.samples.push(e));
                 }
 
                 // Add Slots
                 if (config.slots) {
                     for (const slotName in config.slots) {
                         if (config.slots.hasOwnProperty(slotName)) {
-                            addSlotToIntent(intent, slotName, config.slots[slotName]);
+                            const slot = config.slots[slotName];
+                            if (typeof slot === 'string') {
+                                vui.addSlot(intent, slotName, slot);
+                            } else {
+                                vui.addDialogSlot(intentName, slotName, {
+                                    type: slot.type,
+                                    elicitationRequired: slot.elicitationRequired,
+                                    confirmationRequired: slot.confirmationRequired,
+                                    prompt: slot.prompt,
+                                    texts: expandTexts(slot.texts, locale),
+                                });
+                            }
                         }
                     }
                 }
             }
         }
     }
-    return Promise.resolve(intentList);
+    return Promise.resolve(vui);
 };
 
 /**
- * Creates a list of intents your skill should provide when using the AudioPlayer feature
- * @return {Promise.<Array>} the intent list
+ * Adds the intents your skill should provide when using the AudioPlayer feature
  */
-export const createAudioPlayerIntents = () : Promise<IntentDefinition[]> => {
-    'use strict';
-
-    const intentList = [];
-
-    createNewIntent(intentList, 'AMAZON.PauseIntent');
-    createNewIntent(intentList, 'AMAZON.ResumeIntent');
-    createNewIntent(intentList, 'AMAZON.LoopOffIntent');
-    createNewIntent(intentList, 'AMAZON.LoopOnIntent');
-    createNewIntent(intentList, 'AMAZON.NextIntent');
-    createNewIntent(intentList, 'AMAZON.PreviousIntent');
-    createNewIntent(intentList, 'AMAZON.RepeatIntent');
-    createNewIntent(intentList, 'AMAZON.ShuffleOffIntent');
-    createNewIntent(intentList, 'AMAZON.ShuffleOnIntent');
-    createNewIntent(intentList, 'AMAZON.StartOverIntent');
-
-    return Promise.resolve(intentList);
+export const createAudioPlayerIntents = (vui : VoiceInterface, locale : string) : Promise<VoiceInterface> => {
+    vui.getOrCreateIntent('AMAZON.PauseIntent');
+    vui.getOrCreateIntent('AMAZON.ResumeIntent');
+    vui.getOrCreateIntent('AMAZON.LoopOffIntent');
+    vui.getOrCreateIntent('AMAZON.LoopOnIntent');
+    vui.getOrCreateIntent('AMAZON.NextIntent');
+    vui.getOrCreateIntent('AMAZON.PreviousIntent');
+    vui.getOrCreateIntent('AMAZON.RepeatIntent');
+    vui.getOrCreateIntent('AMAZON.ShuffleOffIntent');
+    vui.getOrCreateIntent('AMAZON.ShuffleOnIntent');
+    vui.getOrCreateIntent('AMAZON.StartOverIntent');
+    return Promise.resolve(vui);
 };
 
 /**
- * Creates a list of intents your skill should provide when using the Display feature
- * @return {Promise.<Array>} the intent list
+ * Adds the intents your skill should provide when using the Display feature
  */
-export const createDisplayIntents = () : Promise<IntentDefinition[]> => {
-    'use strict';
-
-    const intentList = [];
-
-    createNewIntent(intentList, 'AMAZON.ScrollUpIntent');
-    createNewIntent(intentList, 'AMAZON.ScrollLeftIntent');
-    createNewIntent(intentList, 'AMAZON.ScrollDownIntent');
-    createNewIntent(intentList, 'AMAZON.ScrollRightIntent');
-    createNewIntent(intentList, 'AMAZON.PageUpIntent');
-    createNewIntent(intentList, 'AMAZON.PageDownIntent');
-    createNewIntent(intentList, 'AMAZON.MoreIntent');
-    createNewIntent(intentList, 'AMAZON.NavigateHomeIntent');
-    createNewIntent(intentList, 'AMAZON.NavigateSettingsIntent');
-
-    return Promise.resolve(intentList);
+export const createDisplayIntents = (vui : VoiceInterface, locale : string) : Promise<VoiceInterface> => {
+    vui.getOrCreateIntent('AMAZON.ScrollUpIntent');
+    vui.getOrCreateIntent('AMAZON.ScrollLeftIntent');
+    vui.getOrCreateIntent('AMAZON.ScrollDownIntent');
+    vui.getOrCreateIntent('AMAZON.ScrollRightIntent');
+    vui.getOrCreateIntent('AMAZON.PageUpIntent');
+    vui.getOrCreateIntent('AMAZON.PageDownIntent');
+    vui.getOrCreateIntent('AMAZON.MoreIntent');
+    vui.getOrCreateIntent('AMAZON.NavigateHomeIntent');
+    vui.getOrCreateIntent('AMAZON.NavigateSettingsIntent');
+    return Promise.resolve(vui);
 };

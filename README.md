@@ -17,17 +17,18 @@ generator.createLanguageModel(options, locale);
 
 `options` is an object which configures the generation of the language model
 
-* `intentCreators` is a function or an array of functions that return a Promise resolving to a list of intents as expected by the Alexa Skill Builder.
-* `typeCreators` is a function or an array of functions that return a Promise resolving to a list of types as expected by the Alexa Skill Builder.
+* `processors` is an array of functions that manipulate the provided VUI model.
 * `invocation` is a string that denotes the invocation name of the skill
-* `postProcessor` is an optional function with one argument to post process the generated VUI 
 * `pretty` defines if the output should be pretty printed. By default it is minified.
+* `skipOutput` can be set to `true` to skip writing the output file
 
-`locale` is the locale that is generated and denotes the file name. (models/{locale}.json). It is forwarded to the generator functions as the first argument.
+`locale` is the locale that is generated and denotes the file name. (models/{locale}.json). It is forwarded to the processor functions as the second argument.
+
+`outputDir` is the folder to write the VUI (defaults to './models')
 
 ### Using intents.yaml
 
-You can use the provided function `generator.readIntentsFromYAML` as a function in `intentCreators` that reads the intents from a file called `intents.yaml` and adds the Amazon default intents.
+You can use the provided function `readIntentsFromYAML` as a function in `processors` that reads the intents from a file called `intents.yaml` and adds the Amazon default intents.
 
 Furthermore it expands the provided texts to allow variations in the language. See example for usage.
 
@@ -77,10 +78,28 @@ MySuperIntent:
     channel: ChannelName
 ```
 
+To use dialog support you can specify the slot in an expanded way:
+
+`intents.yaml`
+```yaml
+CalculateIntent:
+  texts:
+    - ja (bitte|)
+    - ausrechnen
+  slots:
+    age:
+      type: AMAZON.NUMBER
+      elicitationRequired: true
+      confirmationRequired: false
+      prompt: Wie alt bist du?
+      texts:
+        - Ich bin {age} (Jahre alt|)
+        - '{age}'
+```
 
 ### Using types.yaml
 
-You can use the provided function `generator.readTypesFromYAML` as a function in `typeCreators` that reads the slot types from a file called `types.yaml`.
+You can use the provided function `readTypesFromYAML` as a function in `processors` that reads the slot types from a file called `types.yaml`.
 
 `types.yaml`
 ```yaml
@@ -124,7 +143,7 @@ ChannelName:
       - rock musik
 ```
 
-### Other generator functions used as `intentCreators`
+### Other generator functions used as `processors`
 
 `createAudioPlayerIntents` - Creates the intents needed when using the AudioPlayer functionality.
 `createDisplayIntents` - Creates the intents needed when using the Display functionality.

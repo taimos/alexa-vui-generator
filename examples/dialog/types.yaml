@@ -1,0 +1,9 @@
+LIST_OF_GENDER:
+  m:
+    - männlich
+    - (ein|) mann
+    - ich bin ein mann
+  w:
+    - weiblich
+    - (eine|) frau
+    - ich bin eine frau

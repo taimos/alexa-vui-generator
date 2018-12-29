@@ -1,16 +1,11 @@
-import { IntentDefinition } from './intents';
-import { TypeDefinition } from './types';
-export { addSlotToIntent, createAudioPlayerIntents, createDisplayIntents, createNewIntent, readIntentsFromYAML } from './intents';
-export { addValueToType, createNewSlotType, readTypesFromYAML } from './types';
+import { VoiceInterface } from './voicemodel';
+export { createAudioPlayerIntents, createDisplayIntents, readIntentsFromYAML } from './intents';
+export { readTypesFromYAML } from './types';
 export interface GenerationOptions {
     invocation: string;
-    intentCreators?: Array<Promise<IntentDefinition[]> | ((locale: string) => IntentDefinition[] | Promise<IntentDefinition[]>)> | Promise<IntentDefinition[]> | ((locale: string) => IntentDefinition[] | Promise<IntentDefinition[]>);
-    typeCreators?: Array<Promise<TypeDefinition[]> | ((locale: string) => TypeDefinition[] | Promise<TypeDefinition[]>)> | Promise<TypeDefinition[]> | ((locale: string) => TypeDefinition[] | Promise<TypeDefinition[]>);
-    postProcessors?: Array<((vui: VoiceInterface) => VoiceInterface)>;
+    processors?: Array<((vui: VoiceInterface, locale: string) => Promise<VoiceInterface> | VoiceInterface)>;
     pretty?: boolean;
-}
-export interface VoiceInterface {
-    interactionModel: any;
+    skipOuput?: boolean;
 }
 /**
  * Create the voice interface

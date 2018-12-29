@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>VoiceInterface | alexa-vui-generator</title>
+	<title>InteractionModel | alexa-vui-generator</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,10 +54,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="voiceinterface.html">VoiceInterface</a>
+					<a href="interactionmodel.html">InteractionModel</a>
 				</li>
 			</ul>
-			<h1>Interface VoiceInterface</h1>
+			<h1>Interface InteractionModel</h1>
 		</div>
 	</div>
 </header>
@@ -68,7 +68,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">VoiceInterface</span>
+						<span class="target">InteractionModel</span>
 					</li>
 				</ul>
 			</section>
@@ -79,7 +79,9 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="voiceinterface.html#interactionmodel" class="tsd-kind-icon">interaction<wbr>Model</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="interactionmodel.html#dialog" class="tsd-kind-icon">dialog</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="interactionmodel.html#languagemodel" class="tsd-kind-icon">language<wbr>Model</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="interactionmodel.html#prompts" class="tsd-kind-icon">prompts</a></li>
 							</ul>
 						</section>
 					</div>
@@ -88,12 +90,32 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="interactionmodel" class="tsd-anchor"></a>
-					<h3>interaction<wbr>Model</h3>
-					<div class="tsd-signature tsd-kind-icon">interaction<wbr>Model<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
+					<a name="dialog" class="tsd-anchor"></a>
+					<h3>dialog</h3>
+					<div class="tsd-signature tsd-kind-icon">dialog<span class="tsd-signature-symbol">:</span> <a href="dialogdefinition.html" class="tsd-signature-type">DialogDefinition</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/taimos/alexa-vui-generator/blob/886f8d5/lib/index.ts#L22">index.ts:22</a></li>
+							<li>Defined in <a href="https://github.com/taimos/alexa-vui-generator/blob/d981b55/lib/voicemodel.ts#L73">voicemodel.ts:73</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="languagemodel" class="tsd-anchor"></a>
+					<h3>language<wbr>Model</h3>
+					<div class="tsd-signature tsd-kind-icon">language<wbr>Model<span class="tsd-signature-symbol">:</span> <a href="languagemodel.html" class="tsd-signature-type">LanguageModel</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/taimos/alexa-vui-generator/blob/d981b55/lib/voicemodel.ts#L72">voicemodel.ts:72</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="prompts" class="tsd-anchor"></a>
+					<h3>prompts</h3>
+					<div class="tsd-signature tsd-kind-icon">prompts<span class="tsd-signature-symbol">:</span> <a href="promptdefinition.html" class="tsd-signature-type">PromptDefinition</a><span class="tsd-signature-symbol">[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/taimos/alexa-vui-generator/blob/d981b55/lib/voicemodel.ts#L74">voicemodel.ts:74</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -109,14 +131,74 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-class">
+						<a href="../classes/voiceinterface.html" class="tsd-kind-icon">Voice<wbr>Interface</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="dialogdefinition.html" class="tsd-kind-icon">Dialog<wbr>Definition</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="dialogintentdefinition.html" class="tsd-kind-icon">Dialog<wbr>Intent<wbr>Definition</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="dialogintentslotdefinition.html" class="tsd-kind-icon">Dialog<wbr>Intent<wbr>Slot<wbr>Definition</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="dialogprompt.html" class="tsd-kind-icon">Dialog<wbr>Prompt</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="dialogslotconfig.html" class="tsd-kind-icon">Dialog<wbr>Slot<wbr>Config</a>
+					</li>
 					<li class=" tsd-kind-interface">
 						<a href="generationoptions.html" class="tsd-kind-icon">Generation<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="intentconfig.html" class="tsd-kind-icon">Intent<wbr>Config</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="intentdefinition.html" class="tsd-kind-icon">Intent<wbr>Definition</a>
 					</li>
 					<li class=" tsd-kind-interface">
+						<a href="intentfile.html" class="tsd-kind-icon">Intent<wbr>File</a>
+					</li>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface">
+						<a href="interactionmodel.html" class="tsd-kind-icon">Interaction<wbr>Model</a>
+						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="interactionmodel.html#dialog" class="tsd-kind-icon">dialog</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="interactionmodel.html#languagemodel" class="tsd-kind-icon">language<wbr>Model</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="interactionmodel.html#prompts" class="tsd-kind-icon">prompts</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+					<li class=" tsd-kind-interface">
+						<a href="languagemodel.html" class="tsd-kind-icon">Language<wbr>Model</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="localizedtexts.html" class="tsd-kind-icon">Localized<wbr>Texts</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="promptdefinition.html" class="tsd-kind-icon">Prompt<wbr>Definition</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="promptvariationdefinition.html" class="tsd-kind-icon">Prompt<wbr>Variation<wbr>Definition</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="slotconfig.html" class="tsd-kind-icon">Slot<wbr>Config</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="slotdefinition.html" class="tsd-kind-icon">Slot<wbr>Definition</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="slotsconfig.html" class="tsd-kind-icon">Slots<wbr>Config</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="typedefinition.html" class="tsd-kind-icon">Type<wbr>Definition</a>
@@ -127,26 +209,8 @@
 					<li class=" tsd-kind-interface">
 						<a href="typevaluenamedefinition.html" class="tsd-kind-icon">Type<wbr>Value<wbr>Name<wbr>Definition</a>
 					</li>
-				</ul>
-				<ul class="current">
-					<li class="current tsd-kind-interface">
-						<a href="voiceinterface.html" class="tsd-kind-icon">Voice<wbr>Interface</a>
-						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="voiceinterface.html#interactionmodel" class="tsd-kind-icon">interaction<wbr>Model</a>
-							</li>
-						</ul>
-					</li>
-				</ul>
-				<ul class="after-current">
 					<li class=" tsd-kind-function tsd-is-not-exported">
 						<a href="../globals.html#adddummydialog" class="tsd-kind-icon">add<wbr>Dummy<wbr>Dialog</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="../globals.html#addslottointent" class="tsd-kind-icon">add<wbr>Slot<wbr>ToIntent</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="../globals.html#addvaluetotype" class="tsd-kind-icon">add<wbr>Value<wbr>ToType</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="../globals.html#createaudioplayerintents" class="tsd-kind-icon">create<wbr>Audio<wbr>Player<wbr>Intents</a>
@@ -157,12 +221,6 @@
 					<li class=" tsd-kind-function">
 						<a href="../globals.html#createlanguagemodel" class="tsd-kind-icon">create<wbr>Language<wbr>Model</a>
 					</li>
-					<li class=" tsd-kind-function">
-						<a href="../globals.html#createnewintent" class="tsd-kind-icon">create<wbr>New<wbr>Intent</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="../globals.html#createnewslottype" class="tsd-kind-icon">create<wbr>New<wbr>Slot<wbr>Type</a>
-					</li>
 					<li class=" tsd-kind-function tsd-is-not-exported">
 						<a href="../globals.html#createpromise" class="tsd-kind-icon">create<wbr>Promise</a>
 					</li>
@@ -171,6 +229,9 @@
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="../globals.html#expandstrings" class="tsd-kind-icon">expand<wbr>Strings</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="../globals.html#expandtexts" class="tsd-kind-icon">expand<wbr>Texts</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="../globals.html#readintentsfromyaml" class="tsd-kind-icon">read<wbr>Intents<wbr>FromYAML</a>

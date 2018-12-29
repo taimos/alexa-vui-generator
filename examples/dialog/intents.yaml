@@ -1,0 +1,27 @@
+AMAZON.StopIntent:
+  texts:
+    - Danke nein
+    - Nein danke
+    - Beenden
+    - Nichts
+
+CalculateIntent:
+  texts:
+    - ja (bitte|)
+    - ausrechnen
+  slots:
+    age:
+      type: AMAZON.NUMBER
+      elicitationRequired: true
+      confirmationRequired: false
+      prompt: Wie alt bist du?
+      texts:
+        - Ich bin {age} (Jahre alt|)
+        - '{age}'
+    gender:
+      type: LIST_OF_GENDER
+      elicitationRequired: true
+      confirmationRequired: false
+      prompt: Bist Du eine Frau oder ein Mann?
+      texts:
+        - (Ich bin|) {gender}

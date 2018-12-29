@@ -72,15 +72,15 @@
 generator.createLanguageModel(options, locale);
 </code></pre><p><code>options</code> is an object which configures the generation of the language model</p>
 				<ul>
-					<li><code>intentCreators</code> is a function or an array of functions that return a Promise resolving to a list of intents as expected by the Alexa Skill Builder.</li>
-					<li><code>typeCreators</code> is a function or an array of functions that return a Promise resolving to a list of types as expected by the Alexa Skill Builder.</li>
+					<li><code>processors</code> is an array of functions that manipulate the provided VUI model.</li>
 					<li><code>invocation</code> is a string that denotes the invocation name of the skill</li>
-					<li><code>postProcessor</code> is an optional function with one argument to post process the generated VUI </li>
 					<li><code>pretty</code> defines if the output should be pretty printed. By default it is minified.</li>
+					<li><code>skipOutput</code> can be set to <code>true</code> to skip writing the output file</li>
 				</ul>
-				<p><code>locale</code> is the locale that is generated and denotes the file name. (models/{locale}.json). It is forwarded to the generator functions as the first argument.</p>
+				<p><code>locale</code> is the locale that is generated and denotes the file name. (models/{locale}.json). It is forwarded to the processor functions as the second argument.</p>
+				<p><code>outputDir</code> is the folder to write the VUI (defaults to &#39;./models&#39;)</p>
 				<h3 id="using-intents-yaml">Using intents.yaml</h3>
-				<p>You can use the provided function <code>generator.readIntentsFromYAML</code> as a function in <code>intentCreators</code> that reads the intents from a file called <code>intents.yaml</code> and adds the Amazon default intents.</p>
+				<p>You can use the provided function <code>readIntentsFromYAML</code> as a function in <code>processors</code> that reads the intents from a file called <code>intents.yaml</code> and adds the Amazon default intents.</p>
 				<p>Furthermore it expands the provided texts to allow variations in the language. See example for usage.</p>
 				<p><code>intents.yaml</code></p>
 				<pre><code class="lang-yaml"><span class="hljs-attr">MySuperIntent:</span>
@@ -120,8 +120,24 @@ generator.createLanguageModel(options, locale);
 <span class="hljs-attr">  slots:</span>
 <span class="hljs-attr">    channel:</span> <span class="hljs-string">ChannelName</span>
 </code></pre>
+				<p>To use dialog support you can specify the slot in an expanded way:</p>
+				<p><code>intents.yaml</code></p>
+				<pre><code class="lang-yaml"><span class="hljs-attr">CalculateIntent:</span>
+<span class="hljs-attr">  texts:</span>
+<span class="hljs-bullet">    -</span> <span class="hljs-string">ja</span> <span class="hljs-string">(bitte|)</span>
+<span class="hljs-bullet">    -</span> <span class="hljs-string">ausrechnen</span>
+<span class="hljs-attr">  slots:</span>
+<span class="hljs-attr">    age:</span>
+<span class="hljs-attr">      type:</span> <span class="hljs-string">AMAZON.NUMBER</span>
+<span class="hljs-attr">      elicitationRequired:</span> <span class="hljs-literal">true</span>
+<span class="hljs-attr">      confirmationRequired:</span> <span class="hljs-literal">false</span>
+<span class="hljs-attr">      prompt:</span> <span class="hljs-string">Wie</span> <span class="hljs-string">alt</span> <span class="hljs-string">bist</span> <span class="hljs-string">du?</span>
+<span class="hljs-attr">      texts:</span>
+<span class="hljs-bullet">        -</span> <span class="hljs-string">Ich</span> <span class="hljs-string">bin</span> <span class="hljs-string">{age}</span> <span class="hljs-string">(Jahre</span> <span class="hljs-string">alt|)</span>
+<span class="hljs-bullet">        -</span> <span class="hljs-string">'{age}'</span>
+</code></pre>
 				<h3 id="using-types-yaml">Using types.yaml</h3>
-				<p>You can use the provided function <code>generator.readTypesFromYAML</code> as a function in <code>typeCreators</code> that reads the slot types from a file called <code>types.yaml</code>.</p>
+				<p>You can use the provided function <code>readTypesFromYAML</code> as a function in <code>processors</code> that reads the slot types from a file called <code>types.yaml</code>.</p>
 				<p><code>types.yaml</code></p>
 				<pre><code class="lang-yaml"><span class="hljs-attr">ChannelName:</span>
 <span class="hljs-attr">  rock:</span>
@@ -156,7 +172,7 @@ generator.createLanguageModel(options, locale);
 <span class="hljs-bullet">      -</span> <span class="hljs-string">rock</span>
 <span class="hljs-bullet">      -</span> <span class="hljs-string">rock</span> <span class="hljs-string">musik</span>
 </code></pre>
-				<h3 id="other-generator-functions-used-as-intentcreators">Other generator functions used as <code>intentCreators</code></h3>
+				<h3 id="other-generator-functions-used-as-processors">Other generator functions used as <code>processors</code></h3>
 				<p><code>createAudioPlayerIntents</code> - Creates the intents needed when using the AudioPlayer functionality.
 				<code>createDisplayIntents</code> - Creates the intents needed when using the Display functionality.</p>
 			</div>
@@ -171,14 +187,59 @@ generator.createLanguageModel(options, locale);
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-class">
+						<a href="classes/voiceinterface.html" class="tsd-kind-icon">Voice<wbr>Interface</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/dialogdefinition.html" class="tsd-kind-icon">Dialog<wbr>Definition</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/dialogintentdefinition.html" class="tsd-kind-icon">Dialog<wbr>Intent<wbr>Definition</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/dialogintentslotdefinition.html" class="tsd-kind-icon">Dialog<wbr>Intent<wbr>Slot<wbr>Definition</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/dialogprompt.html" class="tsd-kind-icon">Dialog<wbr>Prompt</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/dialogslotconfig.html" class="tsd-kind-icon">Dialog<wbr>Slot<wbr>Config</a>
+					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/generationoptions.html" class="tsd-kind-icon">Generation<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/intentconfig.html" class="tsd-kind-icon">Intent<wbr>Config</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/intentdefinition.html" class="tsd-kind-icon">Intent<wbr>Definition</a>
 					</li>
 					<li class=" tsd-kind-interface">
+						<a href="interfaces/intentfile.html" class="tsd-kind-icon">Intent<wbr>File</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/interactionmodel.html" class="tsd-kind-icon">Interaction<wbr>Model</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/languagemodel.html" class="tsd-kind-icon">Language<wbr>Model</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/localizedtexts.html" class="tsd-kind-icon">Localized<wbr>Texts</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/promptdefinition.html" class="tsd-kind-icon">Prompt<wbr>Definition</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/promptvariationdefinition.html" class="tsd-kind-icon">Prompt<wbr>Variation<wbr>Definition</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/slotconfig.html" class="tsd-kind-icon">Slot<wbr>Config</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="interfaces/slotdefinition.html" class="tsd-kind-icon">Slot<wbr>Definition</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/slotsconfig.html" class="tsd-kind-icon">Slots<wbr>Config</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/typedefinition.html" class="tsd-kind-icon">Type<wbr>Definition</a>
@@ -189,17 +250,8 @@ generator.createLanguageModel(options, locale);
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/typevaluenamedefinition.html" class="tsd-kind-icon">Type<wbr>Value<wbr>Name<wbr>Definition</a>
 					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/voiceinterface.html" class="tsd-kind-icon">Voice<wbr>Interface</a>
-					</li>
 					<li class=" tsd-kind-function tsd-is-not-exported">
 						<a href="globals.html#adddummydialog" class="tsd-kind-icon">add<wbr>Dummy<wbr>Dialog</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#addslottointent" class="tsd-kind-icon">add<wbr>Slot<wbr>ToIntent</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#addvaluetotype" class="tsd-kind-icon">add<wbr>Value<wbr>ToType</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#createaudioplayerintents" class="tsd-kind-icon">create<wbr>Audio<wbr>Player<wbr>Intents</a>
@@ -210,12 +262,6 @@ generator.createLanguageModel(options, locale);
 					<li class=" tsd-kind-function">
 						<a href="globals.html#createlanguagemodel" class="tsd-kind-icon">create<wbr>Language<wbr>Model</a>
 					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#createnewintent" class="tsd-kind-icon">create<wbr>New<wbr>Intent</a>
-					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#createnewslottype" class="tsd-kind-icon">create<wbr>New<wbr>Slot<wbr>Type</a>
-					</li>
 					<li class=" tsd-kind-function tsd-is-not-exported">
 						<a href="globals.html#createpromise" class="tsd-kind-icon">create<wbr>Promise</a>
 					</li>
@@ -224,6 +270,9 @@ generator.createLanguageModel(options, locale);
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#expandstrings" class="tsd-kind-icon">expand<wbr>Strings</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#expandtexts" class="tsd-kind-icon">expand<wbr>Texts</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#readintentsfromyaml" class="tsd-kind-icon">read<wbr>Intents<wbr>FromYAML</a>
