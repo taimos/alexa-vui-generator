@@ -1,0 +1,36 @@
+AttributeName:
+  symbol:
+    - symbol
+    - zeichen
+    - chemische zeichen
+    - chemisches zeichen
+  mass:
+    - masse
+    - atommasse
+    - atomgewicht
+    - gewicht
+  number:
+    - nummer
+    - ordnungszahl
+    - kernladungszahl
+    - protonenzahl
+    - elektronenzahl
+  outerElectrons:
+    - Außenelektronen
+    - Anzahl der Außenelektronen
+    - Valenzelektronen
+    - Anzahl der Valenzelektronen
+    - Bindungselektronen
+    - Anzahl der Bindungselektronen
+  groupNumber:
+    - Gruppe
+    - Gruppennummer
+    - Gruppenummer
+    - Hauptgruppe
+    - Nebengruppe
+  negativity:
+    - Elektronegativität
+    - Negativität
+  electronConfig:
+    - Konfiguration
+    - Elektronenkonfiguration

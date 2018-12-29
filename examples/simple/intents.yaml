@@ -1,0 +1,8 @@
+GetElementAttributeIntent:
+  texts:
+    - was ist (der|die|das|) {attribute} (von|für) {element}
+    - was (der|die|das|) {attribute} (von|für) {element} ist
+    - (dem|der|) {attribute} (von|für) {element}
+  slots:
+    element: ElementName
+    attribute: AttributeName
