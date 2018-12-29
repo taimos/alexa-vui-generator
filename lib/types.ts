@@ -39,7 +39,7 @@ export const createNewSlotType = (typeList : TypeDefinition[], typeName : string
  * @param value - the value of the entity
  * @param synonyms - the synonyms to use for the entity
  */
-export const addValueToType = (type : TypeDefinition, id : string, value : string, synonyms : string[]) : void => {
+export const addValueToType = (type : TypeDefinition, id : string, value : string, synonyms? : string[]) : void => {
     'use strict';
     const item : TypeValueDefinition = {
         id,
