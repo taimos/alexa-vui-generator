@@ -24,7 +24,7 @@ export declare const createNewSlotType: (typeList: TypeDefinition[], typeName: s
  * @param value - the value of the entity
  * @param synonyms - the synonyms to use for the entity
  */
-export declare const addValueToType: (type: TypeDefinition, id: string, value: string, synonyms: string[]) => void;
+export declare const addValueToType: (type: TypeDefinition, id: string, value: string, synonyms?: string[]) => void;
 /**
  * Reads the types.yaml file and returns a promise that resolves to the list of types
  * @param locale - the locale of the language model
