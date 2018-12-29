@@ -10,6 +10,7 @@ import {VoiceInterface} from './voicemodel';
 
 export {createAudioPlayerIntents, createDisplayIntents, readIntentsFromYAML} from './intents';
 export {readTypesFromYAML} from './types';
+export * from './voicemodel';
 
 export interface GenerationOptions {
     invocation : string;
