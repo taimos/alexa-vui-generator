@@ -57,6 +57,9 @@ export const createLanguageModel = (options : GenerationOptions, locale : string
         mkdirpSync(outputDir);
         writeFileSync(modelFileName, generatedVUI.toJSON(options.pretty));
         return vui;
+    }).catch((reason) => {
+        console.log(reason);
+        throw reason;
     });
 };
 
