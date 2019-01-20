@@ -2,6 +2,9 @@
 /*
  * Copyright (c) 2018. Taimos GmbH http://www.taimos.de
  */
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = require("fs");
 const fs_extra_1 = require("fs-extra");
@@ -12,6 +15,7 @@ exports.createDisplayIntents = intents_1.createDisplayIntents;
 exports.readIntentsFromYAML = intents_1.readIntentsFromYAML;
 var types_1 = require("./types");
 exports.readTypesFromYAML = types_1.readTypesFromYAML;
+__export(require("./voicemodel"));
 function addDummyDialog(vui) {
     vui.addDialogSlot('DialogActivationDummyIntent', 'dummy', {
         type: 'AMAZON.NUMBER',
@@ -46,6 +50,9 @@ exports.createLanguageModel = (options, locale, outputDir = './models') => {
         fs_extra_1.mkdirpSync(outputDir);
         fs_1.writeFileSync(modelFileName, generatedVUI.toJSON(options.pretty));
         return vui;
+    }).catch((reason) => {
+        console.log(reason);
+        throw reason;
     });
 };
 const createPromise = (arg, locale) => {

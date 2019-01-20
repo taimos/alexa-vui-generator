@@ -22,6 +22,7 @@ export const readIntentsFromYAML = (vui : VoiceInterface, locale : string) : Pro
     vui.getOrCreateIntent('AMAZON.CancelIntent');
     vui.getOrCreateIntent('AMAZON.HelpIntent');
     vui.getOrCreateIntent('AMAZON.StopIntent');
+    vui.getOrCreateIntent('AMAZON.FallbackIntent');
 
     // Intent expansion
     const intentConfig : IntentFile = load('intents.yaml');

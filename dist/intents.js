@@ -22,6 +22,7 @@ exports.readIntentsFromYAML = (vui, locale) => {
     vui.getOrCreateIntent('AMAZON.CancelIntent');
     vui.getOrCreateIntent('AMAZON.HelpIntent');
     vui.getOrCreateIntent('AMAZON.StopIntent');
+    vui.getOrCreateIntent('AMAZON.FallbackIntent');
     // Intent expansion
     const intentConfig = yamljs_1.load('intents.yaml');
     for (const intentName in intentConfig) {

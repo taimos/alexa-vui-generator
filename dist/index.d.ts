@@ -1,6 +1,7 @@
 import { VoiceInterface } from './voicemodel';
 export { createAudioPlayerIntents, createDisplayIntents, readIntentsFromYAML } from './intents';
 export { readTypesFromYAML } from './types';
+export * from './voicemodel';
 export interface GenerationOptions {
     invocation: string;
     processors?: Array<((vui: VoiceInterface, locale: string) => Promise<VoiceInterface> | VoiceInterface)>;
