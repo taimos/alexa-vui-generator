@@ -1,6 +1,7 @@
 # Generator for Alexa Voice Interface definitions
 
 [![npm version](https://badge.fury.io/js/alexa-vui-generator.svg)](https://badge.fury.io/js/alexa-vui-generator)
+[![Build Status](https://travis-ci.com/taimos/alexa-vui-generator.svg?branch=master)](https://travis-ci.com/taimos/alexa-vui-generator)
 
 
 ## Installation
